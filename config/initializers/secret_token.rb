@@ -9,4 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-CheerseeApi::Application.config.secret_key_base = '5318197a09a060234e6733cfc9b60a20a1d1f22f37926b862dc6c0ab8dffb975e21dd10e9e3f2bd4593ea0013c8e020df30c60c78b74446c41f53cea2e420733'
+Cheersee::Application.config.secret_key_base = '5318197a09a060234e6733cfc9b60a20a1d1f22f37926b862dc6c0ab8dffb975e21dd10e9e3f2bd4593ea0013c8e020df30c60c78b74446c41f53cea2e420733'

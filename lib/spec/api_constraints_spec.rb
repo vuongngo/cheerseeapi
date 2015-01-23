@@ -8,12 +8,12 @@ describe ApiConstraints do
   describe "matches?" do
 
   	it "returns true when the version matches the 'Accept' header" do
-  	  request = double(host: 'api.cheersee_api.dev', headers: {"Accept" => "application/vnd.cheersee_api.v1"})
+  	  request = double(host: 'api.cheersee.dev', headers: {"Accept" => "application/vnd.cheersee.v1"})
 	  api_constraints_v1.matches?(request).should be_truthy
 	end
 
 	it "returns the default version when 'default' option is specified" do
- 	  request = double(host: 'api.cheersee_api.dev')
+ 	  request = double(host: 'api.cheersee.dev')
  	  api_constraints_v2.matches?(request).should be_truthy
  	end
   end

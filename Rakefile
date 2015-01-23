@@ -3,4 +3,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-CheerseeApi::Application.load_tasks
+Cheersee::Application.load_tasks

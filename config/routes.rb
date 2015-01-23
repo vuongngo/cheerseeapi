@@ -1,5 +1,5 @@
 require 'api_constraints'
-CheerseeApi::Application.routes.draw do
+Cheersee::Application.routes.draw do
   devise_for :users
   #API definition
   namespace :api, defaults: { format: :json }, constraints: { subdomain: 'api'}, path: '/' do
