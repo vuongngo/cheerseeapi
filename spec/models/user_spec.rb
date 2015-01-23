@@ -9,5 +9,12 @@ RSpec.describe User, :type => :model do
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
 
-  it { should be_valid }  
+  it { should be_valid }
+
+  describe "when email is not present" do
+    it { should validate_presence_of(:email) }
+    it { should validate_uniqueness_of(:email) }
+    it { should validate_presence_of(:password) }
+    it { should allow_value('emample@domain.com').for(:email) }
+  end
 end
