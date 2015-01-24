@@ -1,5 +1,6 @@
 class User
   include Mongoid::Document
+  include Tokenable
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -36,14 +37,4 @@ class User
   field :auth_token,        type: String, default: ""
   validates :auth_token, uniqueness: true
   index({ auth_token: 1 }, { unique: true })
-
-  before_create :generate_authentication_token!
-
-  protected
-    def generate_authentication_token!
-      self.auth_token = loop do
-        random_token = SecureRandom.urlsafe_base64(nil, false)
-        break random_token unless User.where(:auth_token => random_token).exists?
-      end
-    end
 end
