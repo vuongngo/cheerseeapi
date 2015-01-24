@@ -38,9 +38,15 @@ RSpec.configure do |config|
     #Including to test requests
   config.include Request::JsonHelpers, :type => :controller
   config.include Request::HeadersHelpers, :type => :controller
-  config.include Devise::TestHelpers, :type => :controller
+  config.include Devise::TestHelpers, type: :controller
+  
   config.before(:each, type: :controller) do
     include_default_accept_headers
   end
 
+  RSpec.configure do |rspec|
+    rspec.mock_with :rspec do |mocks|
+      mocks.add_stub_and_should_receive_to Authenticable
+    end
+  end
 end

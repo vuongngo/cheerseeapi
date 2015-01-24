@@ -4,7 +4,7 @@ class Authentication
   include Authenticable
 end
 
-describe Authenticable, :type => :controller do
+RSpec.describe Authenticable, :type => :controller  do
   let(:authentication) { Authentication.new }
 
   describe "#current_user" do 
@@ -15,6 +15,20 @@ describe Authenticable, :type => :controller do
   	end
   	it "returns the user from the authorization header" do 
   	  expect(authentication.current_user.auth_token).to eql @user.auth_token
+  	end
+  end
+
+  describe "#authenticate_with_token" do 
+  	before do
+  	  @user = FactoryGirl.create :user
+  	  allow(authentication).to receive(:current_user).and_return(nil)
+  	  response.stub(:response_code).and_return(401)
+      response.stub(:body).and_return({"errors" => "Not authenticated"}.to_json)
+  	  allow(authentication).to receive(:response).and_return(response)
+  	end
+
+  	it "render a json error message" do 
+  	  expect(json_response[:errors]).to eql "Not authenticated"
   	end
   end
 end
