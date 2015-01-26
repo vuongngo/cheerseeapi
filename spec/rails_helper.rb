@@ -27,7 +27,8 @@ RSpec.configure do |config|
   config.include Request::JsonHelpers, :type => :controller
   config.include Request::HeadersHelpers, :type => :controller
   config.include Devise::TestHelpers, type: :controller
-  
+  # Config mongoid macher for test
+  config.include Mongoid::Matchers, type: :model  
   config.before(:each, type: :controller) do
     include_default_accept_headers
   end

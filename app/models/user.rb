@@ -37,4 +37,10 @@ class User
   field :auth_token,        type: String, default: ""
   validates :auth_token, uniqueness: true
   index({ auth_token: 1 }, { unique: true })
+
+  embeds_one :profile
+  embeds_many :achievements
+  embeds_many :marked_contests
+  embeds_many :to_connections
+  embeds_many :from_connections
 end

@@ -53,4 +53,5 @@ group :test do
   gem "shoulda-matchers"
   # gem 'mongoid-rspec'
   gem "rspec-rails", "~>2.14"
+  gem 'mongoid-rspec'
 end
