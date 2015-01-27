@@ -8,6 +8,6 @@ FactoryGirl.define do
   	ended_at { rand_time(2.days.ago) } 
   	created_at { rand_time(2.days.ago) }
   	updated_at { rand_time(2.days.ago) }
-  	winner { rand_array }
+  	# winner { rand_array }
   end
 end
