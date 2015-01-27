@@ -6,9 +6,8 @@ FactoryGirl.define do
   	att { Faker::Internet.slug }
   	rule { Faker::Internet.slug }
   	ended_at { rand_time(2.days.ago) } 
-	created_at { rand_time(2.days.ago) }
-	updated_at { rand_time(2.days.ago) }
-	winner { rand_array }
+  	created_at { rand_time(2.days.ago) }
+  	updated_at { rand_time(2.days.ago) }
+  	winner { rand_array }
   end
-
 end

@@ -23,4 +23,6 @@ describe Contest do
 
   it { should validate_uniqueness_of(:u).scoped_to(:att, :rule) }
 
+  it { should validate_associated(:participations) }
+
 end

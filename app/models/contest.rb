@@ -14,7 +14,7 @@ class Contest
   embeds_many :c_comments
   embeds_many :c_likes
 
-  has_many :participations
+  has_many :participations, :dependent => :destroy
   
   validates_presence_of :u, :post, :att, :rule, :ended_at, :created_at, :updated_at
   validates_uniqueness_of :u, :scope => [:att, :rule]

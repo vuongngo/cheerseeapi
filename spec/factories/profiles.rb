@@ -6,5 +6,4 @@ FactoryGirl.define do
 	location { Faker::Address.city }
 	interests { Faker::Lorem.sentence }   
   end
-
 end

@@ -7,5 +7,6 @@ FactoryGirl.define do
   	winner_place { Random.new.rand(0..10) }
 	created_at { rand_time(2.days.ago) }
 	updated_at { rand_time(2.days.ago) }
+	contest
   end
 end
