@@ -17,7 +17,7 @@ class Contest
   has_many :participations, :dependent => :destroy
   
   validates_presence_of :u, :post, :att, :rule, :ended_at, :created_at, :updated_at
-  validates_uniqueness_of :post, :scope => [:att, :rule]
+  validates_uniqueness_of :u, :scope => [:att, :rule]
   index({ ended_at: 1 }, { unique: true })
 
 end
