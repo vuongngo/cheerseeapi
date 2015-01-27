@@ -1,6 +1,6 @@
 class Participation
   include Mongoid::Document
-  field :user, 				type: Hash 
+  field :u, 				type: Hash 
 
   belongs_to :contest
 
@@ -12,7 +12,9 @@ class Participation
 
   embeds_many :p_comments
 
-  embeds_may :p_likes 
-
+  embeds_many :p_likes 
+  
+  validates_presence_of :u, :post, :point, :created_at, :updated_at
+  validates_uniqueness_of :u, :scope => [:point, :post]
   index({ ended_at: 1 }, { unique: true })
 end

@@ -41,6 +41,6 @@ class User
   embeds_one :profile
   embeds_many :achievements
   embeds_many :marked_contests
-  embeds_many :to_connections
-  embeds_many :from_connections
+  field :to_connections,    type: Hash 
+  field :from_connections,  type: Hash
 end

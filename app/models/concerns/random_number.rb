@@ -14,4 +14,8 @@ module RandomNumber
 	def rand_in_range(from, to)
 	  rand * (to - from) + from
 	end
+
+	def rand_array
+	  [Random.new.rand, Random.new.rand, Random.new.rand]
+	end
 end

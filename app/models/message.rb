@@ -2,6 +2,10 @@ class Message
   include Mongoid::Document
   embedded_in :chat
 
-  field :user,				type: Hash 
+  field :u,					type: Hash 
   field :mes,				type: String
+  field :created_at,		type: Time
+  
+  validates_presence_of :u, :mes, :created_at
+  validates_uniqueness_of :u, :scope => [:mes, :created_at]
 end
