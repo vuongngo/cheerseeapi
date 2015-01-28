@@ -8,6 +8,9 @@ Cheersee::Application.routes.draw do
       resources :sessions, :only => [:create, :destroy]
       resources :profiles, :only => [:show, :update]
       resources :contests, :only => [:index, :create, :update, :destroy]
+      resources :participations, :only => [:index, :create, :update, :destroy]
+      resources :main_pages, :only => [:index, :show]
+      get "/main_pages/:id/:contest_id", to: "main_pages#association"
     end
   end
 end
