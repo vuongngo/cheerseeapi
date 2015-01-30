@@ -3,22 +3,28 @@ require 'rails_helper'
 describe Api::V1::CCommentsController do
   before do 
     @user = FactoryGirl.create :user
-    @contest = FactoryGirl.create :contest
+    @clink_comment = FactoryGirl.create :clink_comment
   end
 
   describe "POST#create" do
     context "when successfully create" do
       before(:each) do
+        @contest = Contest.find(@clink_comment.contest_id)
         @c_comment_attributes = FactoryGirl.attributes_for :c_comment
         @c_comment_attributes[:u] = { u_id: @user.id, name: @user.profile.name }
         api_authorization_header(@user.auth_token)
-        post :create, { user_id: @user.id, contest_id: @contest.id, c_comment: @c_comment_attributes }
+        post :create, { user_id: @user.id, clink_comment_id: @clink_comment.id, c_comment: @c_comment_attributes }
       end
 
       it "renders the json representation for the comment just created" do
       	c_comment_response = json_response
       	expect(c_comment_response[:post]).to eql @c_comment_attributes[:post]
       end
+
+      it "updates the contest c_link_comment" do
+        @contest1 = Contest.find(@clink_comment.contest_id)
+        expect(@contest1.c_link_comment[:count]).to eql ( @contest.c_link_comment[:count] + 1)
+      end 
 
       it { should respond_with 201 }
     end
@@ -29,7 +35,7 @@ describe Api::V1::CCommentsController do
         @invalid_c_comment_attributes[:u] = { u_id: @user.id, name: @user.profile.name }
       	@invalid_c_comment_attributes[:post] = ""
       	api_authorization_header(@user.auth_token)
-      	post :create, { user_id: @user.id, contest_id: @contest.id, c_comment: @invalid_c_comment_attributes }
+      	post :create, { user_id: @user.id, clink_comment_id: @clink_comment.id, c_comment: @invalid_c_comment_attributes }
       end
 
       it "renders the json errors" do 
@@ -48,7 +54,7 @@ describe Api::V1::CCommentsController do
 
   describe "PUT?PATCH#update" do
   	before(:each) do
-  	  @c_comment = @contest[:c_comments].first
+  	  @c_comment = @clink_comment[:c_comments].first
  	  fetch = @c_comment["u"][:u_id]
  	  @user1 = FactoryGirl.build :user
  	  @user1[:_id] = fetch
@@ -58,7 +64,7 @@ describe Api::V1::CCommentsController do
 
   	context "when successfully updated" do
   	  before(:each) do
-  	    patch :update, { user_id: @user1.id, contest_id: @contest.id, id: @c_comment["_id"], c_comment: { post: "How are you?"} }
+  	    patch :update, { user_id: @user1.id, clink_comment_id: @clink_comment.id, id: @c_comment["_id"], c_comment: { post: "How are you?"} }
   	  end
 
   	  it "renders the json representation of updated comment" do
@@ -71,7 +77,7 @@ describe Api::V1::CCommentsController do
 
   	context "fail to update" do
   	  before(:each) do
-  	  	patch :update, { user_id: @user1.id, contest_id: @contest.id, id: @c_comment["_id"], c_comment: { post: "" } }
+  	  	patch :update, { user_id: @user1.id, clink_comment_id: @clink_comment.id, id: @c_comment["_id"], c_comment: { post: "" } }
   	  end
 
   	  it "render json errors" do
@@ -90,14 +96,20 @@ describe Api::V1::CCommentsController do
 
   describe "DELETE#destroy" do
  	before(:each) do
- 	  @c_comment = @contest[:c_comments].first
+    @contest = Contest.find(@clink_comment.contest_id)
+ 	  @c_comment = @clink_comment[:c_comments].first
  	  fetch = @c_comment["u"][:u_id]
  	  @user1 = FactoryGirl.build :user
  	  @user1[:_id] = fetch
  	  @user1.save
  	  api_authorization_header(@user1.auth_token)
- 	  delete :destroy, { user_id: @user1.id, contest_id: @contest.id, id: @c_comment["_id"] }, format: :json
+ 	  delete :destroy, { user_id: @user1.id, clink_comment_id: @clink_comment.id, id: @c_comment["_id"] }, format: :json
  	end
+
+  it "updates the contest c_link_comment" do
+    @contest1 = Contest.find(@clink_comment.contest_id)
+    expect(@contest1.c_link_comment[:count]).to eql ( @contest.c_link_comment[:count] - 1)
+  end
 
  	it { should respond_with 204 }
   end

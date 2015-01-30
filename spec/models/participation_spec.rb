@@ -10,6 +10,7 @@ describe Participation do
   it { should respond_to(:winner_place) }
   it { should respond_to(:created_at) }
   it { should respond_to(:updated_at) }
+  it { should respond_to(:pic) }
 
   it { should validate_presence_of(:u) }
   it { should validate_presence_of(:post) }
@@ -18,4 +19,7 @@ describe Participation do
   it { should validate_presence_of(:updated_at) }
 
   it { should validate_uniqueness_of(:u).scoped_to(:point, :post) }
+
+  it { should have_one(:plink_comment) }
+  it { should have_one(:plink_like) }
 end

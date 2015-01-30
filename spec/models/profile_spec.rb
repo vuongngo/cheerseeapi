@@ -5,10 +5,10 @@ describe Profile do
   subject { profile }
 
   it { should respond_to(:name) }
-  it { should respond_to(:gender) }
   it { should respond_to(:age) }
   it { should respond_to(:location) }
   it { should respond_to(:interests) }
+  it { should respond_to(:avatar) }
 
   it { should validate_presence_of(:name) }
 end

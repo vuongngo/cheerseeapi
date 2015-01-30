@@ -8,6 +8,8 @@ FactoryGirl.define do
   	ended_at { rand_time(2.days.ago) } 
   	created_at { rand_time(2.days.ago) }
   	updated_at { rand_time(2.days.ago) }
-    c_comments { [FactoryGirl.build(:c_comment), FactoryGirl.build(:c_comment1)] }   
+    pic { [ Random.new.rand, Random.new.rand ]}
+    c_link_comment { {:comment_id => Random.new.rand, :count => Random.new.rand(0..100)} }
+    c_link_like { {:like_id => Random.new.rand, :count => Random.new.rand(0..100)} }
   end
 end

@@ -34,6 +34,14 @@ describe Api::V1::ContestsController, :type => :controller do
   	    expect(contest_response[:post]).to eql @contest_attributes[:post]
   	  end
 
+      it "should create associated records" do
+        contest_response = json_response
+        clink_comment = ClinkComment.find_by(:contest_id => contest_response[:_id][:"$oid"])
+        clink_like = ClinkLike.find_by(:contest_id => contest_response[:_id][:"$oid"])
+        expect(clink_comment).to be_present
+        expect(clink_like).to be_present
+      end
+
   	  it { should respond_with 201 }
   	end
 

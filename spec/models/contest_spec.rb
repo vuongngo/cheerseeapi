@@ -12,6 +12,9 @@ describe Contest do
   it { should respond_to(:created_at) }
   it { should respond_to(:updated_at) }
   it { should respond_to(:winner) }
+  it { should respond_to(:pic) }
+  it { should respond_to(:c_link_comment) }
+  it { should respond_to(:c_link_like) }
 
   it { should validate_presence_of(:u) }
   it { should validate_presence_of(:post) }
@@ -24,5 +27,6 @@ describe Contest do
   it { should validate_uniqueness_of(:u).scoped_to(:att, :rule) }
 
   it { should validate_associated(:participations) }
-
+  it { should have_one(:clink_comment) }
+  it { should have_one(:clink_like) }
 end

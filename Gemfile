@@ -30,6 +30,7 @@ gem 'jquery-rails'
 #Api gems
 gem 'active_model_serializers'
 gem 'devise'
+gem 'random_images', '~> 0.0.6'
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
@@ -46,10 +47,12 @@ end
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
+group :development, :test do
+  gem "factory_girl_rails"
+  gem 'ffaker'
+end
 
 group :test do
-  gem "factory_girl_rails"
-  gem "ffaker"
   gem "shoulda-matchers"
   # gem 'mongoid-rspec'
   gem "rspec-rails", "~>2.14"
