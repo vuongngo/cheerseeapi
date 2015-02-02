@@ -11,14 +11,14 @@ describe Api::V1::FeedsController do
   	  # FactoryGirl automatically create contest records
   	  # because of association between contest and participation
   	  # hence we don't have to create contest records.
-  	  10.times { FactoryGirl.create :participation }
+  	  100.times { FactoryGirl.create :participation }
   	  api_authorization_header(@user.auth_token) 
   	  get :index
   	end
 
-  	it "returns 20 records from database" do
+  	it "returns 25 records from database" do
   		feeds_reponse = json_response
-  		expect(feeds_reponse[:feeds].size).to eq(20)
+  		expect(feeds_reponse[:feeds].size).to eq(25)
   	end
 
     it { expect(json_response).to have_key(:meta) }

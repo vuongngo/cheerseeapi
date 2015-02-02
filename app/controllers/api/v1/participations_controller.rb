@@ -3,7 +3,7 @@ class Api::V1::ParticipationsController < ApplicationController
   respond_to :json
 
   def index
-    participations = Participation.all.page(params[:page]).per(params[:per_page])
+    participations = Participation.order_by(:created_at.desc).limit(100).page(params[:page]).per(params[:per_page])
     render json: participations, meta: { pagination:
                                           { per_page: params[:per_page],
                                             total_pages: participations.total_pages,

@@ -3,7 +3,7 @@ class Api::V1::ContestsController < ApplicationController
   respond_to :json
   
   def index
-    contests = Contest.all.page(params[:page]).per(params[:per_page])
+    contests = Contest.order_by(:created_at.desc).limit(100).page(params[:page]).per(params[:per_page])
     render json: contests, meta: { pagination:
                                    { per_page: params[:per_page],
                                      total_pages: contests.total_pages,
