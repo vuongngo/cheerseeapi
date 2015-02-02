@@ -9,6 +9,7 @@ describe Api::V1::CLikesController do
   describe "POST#create" do
   	context "when successfully created" do
   	  before(:each) do
+        @contest = Contest.find(@clink_like.contest_id)
   	  	@c_like_attributes = FactoryGirl.attributes_for :c_like
   	  	@c_like_attributes[:u] = { u_id: @user.id, name: @user.profile.name }
   	    api_authorization_header(@user.auth_token)
@@ -19,6 +20,11 @@ describe Api::V1::CLikesController do
   	  	c_like_response = json_response
   	  	expect(c_like_response[:created_at].to_datetime.utc.to_s).to eql @c_like_attributes[:created_at].utc.to_datetime.to_s
   	  end
+
+      it "updates the contest c_link_like" do
+        @contest1 = Contest.find(@clink_like.contest_id)
+        expect(@contest1.c_link_like[:count]).to eql ( @contest.c_link_like[:count] + 1)
+      end 
 
   	  it { should respond_with 201 }
   	end
@@ -48,6 +54,7 @@ describe Api::V1::CLikesController do
 
   describe "DELETE#destroy" do
   	before(:each) do
+      @contest = Contest.find(@clink_like.contest_id)
   	  @c_like = @clink_like[:c_likes].first
   	  fetch = @c_like["u"][:u_id]
   	  @user1 = FactoryGirl.build :user
@@ -56,6 +63,11 @@ describe Api::V1::CLikesController do
   	  api_authorization_header(@user1.auth_token)
   	  delete :destroy, { user_id: @user1.id, clink_like_id: @clink_like.id, id: @c_like["_id"] }
   	end
+
+    it "updates the contest c_link_like" do
+      @contest1 = Contest.find(@clink_like.contest_id)
+      expect(@contest1.c_link_like[:count]).to eql ( @contest.c_link_like[:count] - 1)
+    end
 
   	it { should respond_with 204 }
   end

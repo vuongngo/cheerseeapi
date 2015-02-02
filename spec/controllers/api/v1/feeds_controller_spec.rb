@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::MainPagesController do
+describe Api::V1::FeedsController do
   before do
   	@user = FactoryGirl.create :user
   end
@@ -17,8 +17,8 @@ describe Api::V1::MainPagesController do
   	end
 
   	it "returns 20 records from database" do
-  		main_pages_reponse = json_response
-  		expect(main_pages_reponse[:main_pages].size).to eq(20)
+  		feeds_reponse = json_response
+  		expect(feeds_reponse[:feeds].size).to eq(20)
   	end
 
   	it { should respond_with 200 }
@@ -38,9 +38,10 @@ describe Api::V1::MainPagesController do
   	end
 
   	it "returns 2 records from database" do
-  	  main_pages_reponse = json_response
-  	  expect(main_pages_reponse[:main_pages].size).to eq(2)
-	end
+  	  feeds_response = json_response
+  	  expect(feeds_response[:feeds].size).to eq(2)
+      expect(feeds_response[:user]).to have_key(:profile)
+	  end
 
   	it { should respond_with 200 }
   end
@@ -53,8 +54,8 @@ describe Api::V1::MainPagesController do
   	end
 
   	it "returns association" do 
-  	  main_pages_response = json_response
-  	  expect(main_pages_response[:main_pages][0][:_id]).to have_value @participation.contest_id.to_s
+  	  feeds_response = json_response
+  	  expect(feeds_response[:feeds][0][:_id]).to have_value @participation.contest_id.to_s
   	end
 
   	it { should respond_with 200 }

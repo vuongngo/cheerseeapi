@@ -9,6 +9,7 @@ describe Api::V1::PCommentsController do
   describe "POST#create" do
   	context "when successfully create" do
   	  before(:each) do
+        @participation = Participation.find(@plink_comment.participation_id)
   	  	@p_comment_attributes = FactoryGirl.attributes_for :p_comment
   	  	@p_comment_attributes[:u] = { u_id: @user.id, name: @user.profile.name }
   	  	api_authorization_header(@user.auth_token)
@@ -20,7 +21,12 @@ describe Api::V1::PCommentsController do
   	  	expect(p_comment_response[:post]).to eql @p_comment_attributes[:post]
   	  end
 
-  	  it { should respond_with 201 }
+      it "updates the participation p_link_comment" do
+        @participation1 = Participation.find(@plink_comment.participation_id)
+  	    expect(@participation1.p_link_comment[:count]).to eql (@participation.p_link_comment[:count] + 1 )
+      end
+
+      it { should respond_with 201 }
   	end
 
   	context "when fail to create" do
@@ -89,7 +95,8 @@ describe Api::V1::PCommentsController do
 
   describe "DELETE#destroy" do
   	before(:each) do
-  	  @p_comment = @plink_comment[:p_comments].first
+  	  @participation = Participation.find(@plink_comment.participation_id)
+      @p_comment = @plink_comment[:p_comments].first
   	  fetch = @p_comment["u"][:u_id]
   	  @user1 = FactoryGirl.build :user
   	  @user1[:_id] = fetch
@@ -98,7 +105,12 @@ describe Api::V1::PCommentsController do
   	  delete :destroy, { user_id: @user1.id, plink_comment_id: @plink_comment.id, id: @p_comment["_id"]}
   	end  
 
-  	it { should respond_with 204 }
+    it "updates the participation p_link_comment" do
+      @participation1 = Participation.find(@plink_comment.participation_id)
+      expect(@participation1.p_link_comment[:count]).to eql (@participation.p_link_comment[:count] -1 )
+    end
+  	
+    it { should respond_with 204 }
   end
 
 end

@@ -9,6 +9,7 @@ describe Api::V1::PLikesController do
   describe "POST#create" do
   	context "when successfully created" do
   	  before(:each) do
+        @participation = Participation.find(@plink_like.participation_id)
   	  	@p_like_attributes = FactoryGirl.attributes_for :p_like
   	  	@p_like_attributes[:u] = { u_id: @user.id, name: @user.profile.name }
   	    api_authorization_header(@user.auth_token)
@@ -19,6 +20,11 @@ describe Api::V1::PLikesController do
   	  	p_like_response = json_response
   	  	expect(p_like_response[:created_at].to_datetime.utc.to_s).to eql @p_like_attributes[:created_at].utc.to_datetime.to_s
   	  end
+
+      it "updates the participation p_link_like" do
+        @participation1 = Participation.find(@plink_like.participation_id)
+        expect(@participation1.p_link_like[:count]).to eql ( @participation.p_link_like[:count] + 1)
+      end
 
   	  it { should respond_with 201 }
   	end
@@ -48,6 +54,7 @@ describe Api::V1::PLikesController do
 
   describe "DELETE#destroy" do
   	before(:each) do
+      @participation = Participation.find(@plink_like.participation_id)
   	  @p_like = @plink_like[:p_likes].first
   	  fetch = @p_like["u"][:u_id]
   	  @user1 = FactoryGirl.build :user
@@ -57,6 +64,11 @@ describe Api::V1::PLikesController do
   	  delete :destroy, { user_id: @user1.id, plink_like_id: @plink_like.id, id: @p_like["_id"] }
   	end
 
-  	it { should respond_with 204 }
+    it "updates the participation p_link_like" do
+      @participation1 = Participation.find(@plink_like.participation_id)
+      expect(@participation1.p_link_like[:count]).to eql ( @participation.p_link_like[:count] -1 )
+    end
+  	
+    it { should respond_with 204 }
   end
 end

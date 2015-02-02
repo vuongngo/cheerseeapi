@@ -6,6 +6,9 @@ class Api::V1::CLikesController < ApplicationController
   	clink_like = ClinkLike.find(params[:clink_like_id])
   	c_like = clink_like.c_likes.build(c_like_params)
   	if c_like.save
+      contest = Contest.find(clink_like.contest_id)
+      contest.c_link_like[:count] =+ 1
+      contest.save
   	  render json: c_like, status: 201
   	else
   	  render json: { errors: c_like.errors }, status: 422
@@ -16,6 +19,9 @@ class Api::V1::CLikesController < ApplicationController
   	clink_like = ClinkLike.find(params[:clink_like_id])
   	c_like = clink_like.c_likes.find(params[:id])
   	if c_like[:u][:u_id] == current_user.id 
+      contest = Contest.find(clink_like.contest_id)
+      contest.c_link_like[:count] =- 1
+      contest.save
   	  c_like.destroy
   	  head 204
   	end

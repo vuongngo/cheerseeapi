@@ -7,7 +7,7 @@ class Api::V1::CCommentsController < ApplicationController
   	c_comment = clink_comment.c_comments.build(c_comment_params)
   	if c_comment.save
       contest = Contest.find(clink_comment.contest_id)
-      contest.c_link_comment[:count] = contest.c_link_comment[:count] + 1
+      contest.c_link_comment[:count] =+ 1
       contest.save
   	  render json: c_comment, status: 201
   	else
@@ -30,7 +30,7 @@ class Api::V1::CCommentsController < ApplicationController
   	c_comment = clink_comment.c_comments.find(params[:id])
   	if c_comment.u[:u_id] == current_user.id
       contest = Contest.find(clink_comment.contest_id)
-      contest.c_link_comment[:count] = contest.c_link_comment[:count] - 1
+      contest.c_link_comment[:count] =- 1
       contest.save
   	  c_comment.delete
   	  head 204

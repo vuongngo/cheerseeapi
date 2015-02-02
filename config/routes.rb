@@ -1,6 +1,6 @@
 require 'api_constraints'
 Cheersee::Application.routes.draw do
-  devise_for :users
+  devise_for :users, :controllers => {:registrations => 'api/v1/users', :sessions => 'api/v1/sessions'}
   #API definition
   namespace :api, defaults: { format: :json }, constraints: { subdomain: 'api'}, path: '/' do
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
@@ -21,8 +21,8 @@ Cheersee::Application.routes.draw do
       resources :plink_likes do
         resources :p_likes, :only => [:create, :destroy]
       end
-      resources :main_pages, :only => [:index, :show]
-      get "/main_pages/:id/:contest_id", to: "main_pages#association"
+      resources :feeds, :only => [:index, :show]
+      get "/feeds/:id/:contest_id", to: "feeds#association"
     end
   end
 end
