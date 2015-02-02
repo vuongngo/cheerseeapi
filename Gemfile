@@ -28,9 +28,11 @@ gem 'jquery-rails'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 1[pvafaf]
 #Api gems
-# gem 'active_model_serializers'
+gem 'active_model_serializers'
 gem 'devise'
 gem 'random_images', '~> 0.0.6'
+# Paginations
+gem 'kaminari'
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
