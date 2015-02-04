@@ -31,7 +31,7 @@ describe Api::V1::ParticipationsController do
   	context "when successfully created" do
   	  before(:each) do 
   	  	@participation_attributes = FactoryGirl.attributes_for :participation
-  	  	@participation_attributes[:u] = { :u_id => @user.id, :name => @user.profile.name }
+  	  	@participation_attributes[:u] = { :u_id => @user.id, :name => @user.name }
   	  	api_authorization_header(@user.auth_token)
   	  	post :create, { user_id: @user.id, contest_id: @contest.id, participation: @participation_attributes }
   	  end
@@ -69,7 +69,7 @@ describe Api::V1::ParticipationsController do
   describe "PUT/PATCH#update" do 
   	before(:each) do
   	  @participation = FactoryGirl.build :participation
-  	  @participation.u = { u_id: @user.id, name: @user.profile.name }
+  	  @participation.u = { u_id: @user.id, name: @user.name }
   	  @participation.save
   	  api_authorization_header(@user.auth_token)
   	end 
@@ -109,7 +109,7 @@ describe Api::V1::ParticipationsController do
   describe "DELETE#destroy" do
   	before(:each) do
   	  @participation = FactoryGirl.build :participation
-  	  @participation.u = { u_id: @user.id, name: @user.profile.name }
+  	  @participation.u = { u_id: @user.id, name: @user.name }
   	  @participation.save
   	  api_authorization_header(@user.auth_token)
   	  delete :destroy, { user_id: @user.id, id: @participation.id }

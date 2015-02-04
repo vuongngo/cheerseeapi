@@ -5,6 +5,7 @@ RSpec.describe User, :type => :model do
 
   subject { @user }
 
+  it { should respond_to(:name) }
   it { should respond_to(:email) }
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
@@ -20,6 +21,8 @@ RSpec.describe User, :type => :model do
 
   it { should validate_presence_of(:password) }
   it { should validate_uniqueness_of(:auth_token) }
+  it { should validate_presence_of(:name) }
+  it { should validate_presence_of(:gender) }
 
   describe "#generate_authentication_token" do
     it "generates a unique token" do 

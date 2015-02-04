@@ -11,7 +11,7 @@ describe Api::V1::CLikesController do
   	  before(:each) do
         @contest = Contest.find(@clink_like.contest_id)
   	  	@c_like_attributes = FactoryGirl.attributes_for :c_like
-  	  	@c_like_attributes[:u] = { u_id: @user.id, name: @user.profile.name }
+  	  	@c_like_attributes[:u] = { u_id: @user.id, name: @user.name }
   	    api_authorization_header(@user.auth_token)
   	    post :create, { user_id: @user.id, clink_like_id: @clink_like.id, c_like: @c_like_attributes }
   	  end
@@ -32,7 +32,7 @@ describe Api::V1::CLikesController do
   	context "when fail to create" do
   	  before(:each) do
   	  	@invalid_c_like_attributes = FactoryGirl.attributes_for :c_like
-  	  	@invalid_c_like_attributes[:u] = { u_id: @user.id, name: @user.profile.name }
+  	  	@invalid_c_like_attributes[:u] = { u_id: @user.id, name: @user.name }
   	  	@invalid_c_like_attributes[:created_at] = "Yo"
   	  	api_authorization_header(@user.auth_token)
   	  	post :create, { user_id: @user.id, clink_like_id: @clink_like.id, c_like: @invalid_c_like_attributes }

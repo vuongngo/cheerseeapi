@@ -11,7 +11,7 @@ describe Api::V1::PLikesController do
   	  before(:each) do
         @participation = Participation.find(@plink_like.participation_id)
   	  	@p_like_attributes = FactoryGirl.attributes_for :p_like
-  	  	@p_like_attributes[:u] = { u_id: @user.id, name: @user.profile.name }
+  	  	@p_like_attributes[:u] = { u_id: @user.id, name: @user.name }
   	    api_authorization_header(@user.auth_token)
   	    post :create, { user_id: @user.id, plink_like_id: @plink_like.id, p_like: @p_like_attributes }
   	  end
@@ -32,7 +32,7 @@ describe Api::V1::PLikesController do
   	context "when fail to create" do
   	  before(:each) do
   	  	@invalid_p_like_attributes = FactoryGirl.attributes_for :p_like
-  	  	@invalid_p_like_attributes[:u] = { u_id: @user.id, name: @user.profile.name }
+  	  	@invalid_p_like_attributes[:u] = { u_id: @user.id, name: @user.name }
   	  	@invalid_p_like_attributes[:created_at] = "Yo"
   	  	api_authorization_header(@user.auth_token)
   	  	post :create, { user_id: @user.id, plink_like_id: @plink_like.id, p_like: @invalid_p_like_attributes }

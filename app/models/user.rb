@@ -9,7 +9,6 @@ class User
   ## Database authenticatable
   field :email,              type: String, default: ""
   field :encrypted_password, type: String, default: ""
-  field :gender,             type: String
 
   ## Recoverable
   field :reset_password_token,   type: String
@@ -35,9 +34,12 @@ class User
   # field :failed_attempts, type: Integer, default: 0 # Only if lock strategy is :failed_attempts
   # field :unlock_token,    type: String # Only if unlock strategy is :email or :both
   # field :locked_at,       type: Time
-  validates :gender,        presence: true
-  field :auth_token,        type: String, default: ""
-  validates :auth_token, uniqueness: true
+  field :name,               type: String
+  field :gender,             type: String
+  validates :name,           presence: true
+  validates :gender,         presence: true
+  field :auth_token,         type: String, default: ""
+  validates :auth_token,     uniqueness: true
   index({ auth_token: 1 }, { unique: true })
 
   embeds_one :profile, :cascade_callbacks => true

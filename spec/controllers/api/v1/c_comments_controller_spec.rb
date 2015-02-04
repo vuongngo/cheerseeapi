@@ -11,7 +11,7 @@ describe Api::V1::CCommentsController do
       before(:each) do
         @contest = Contest.find(@clink_comment.contest_id)
         @c_comment_attributes = FactoryGirl.attributes_for :c_comment
-        @c_comment_attributes[:u] = { u_id: @user.id, name: @user.profile.name }
+        @c_comment_attributes[:u] = { u_id: @user.id, name: @user.name }
         api_authorization_header(@user.auth_token)
         post :create, { user_id: @user.id, clink_comment_id: @clink_comment.id, c_comment: @c_comment_attributes }
       end
@@ -32,7 +32,7 @@ describe Api::V1::CCommentsController do
     context "when failed to create" do
       before(:each) do
       	@invalid_c_comment_attributes = FactoryGirl.attributes_for :c_comment
-        @invalid_c_comment_attributes[:u] = { u_id: @user.id, name: @user.profile.name }
+        @invalid_c_comment_attributes[:u] = { u_id: @user.id, name: @user.name }
       	@invalid_c_comment_attributes[:post] = ""
       	api_authorization_header(@user.auth_token)
       	post :create, { user_id: @user.id, clink_comment_id: @clink_comment.id, c_comment: @invalid_c_comment_attributes }

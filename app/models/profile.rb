@@ -3,10 +3,9 @@ class Profile
 
   embedded_in :user
 
-  field :name,				type: String, default: "Anonymous"
-  field :age,				type: Integer
+  field :age,				type: Integer, default: 20
   field :location,			type: String
   field :interests,			type: String
   field :avatar,			type: String
-  validates_presence_of :name
+  validates_numericality_of :age, :only_integer => true
 end

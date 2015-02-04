@@ -11,7 +11,7 @@ describe Api::V1::PCommentsController do
   	  before(:each) do
         @participation = Participation.find(@plink_comment.participation_id)
   	  	@p_comment_attributes = FactoryGirl.attributes_for :p_comment
-  	  	@p_comment_attributes[:u] = { u_id: @user.id, name: @user.profile.name }
+  	  	@p_comment_attributes[:u] = { u_id: @user.id, name: @user.name }
   	  	api_authorization_header(@user.auth_token)
   	  	post :create, { user_id: @user.id, plink_comment_id: @plink_comment.id, p_comment: @p_comment_attributes }
   	  end
@@ -32,7 +32,7 @@ describe Api::V1::PCommentsController do
   	context "when fail to create" do
   	  before(:each) do
   	  	@invalid_p_comment_attributes = FactoryGirl.attributes_for :p_comment
-  	  	@invalid_p_comment_attributes[:u] = { u_id: @user.id, name: @user.profile.name }
+  	  	@invalid_p_comment_attributes[:u] = { u_id: @user.id, name: @user.name }
   	  	@invalid_p_comment_attributes[:post] = ""
   	  	api_authorization_header(@user.auth_token)
   	  	post :create, { user_id: @user.id, plink_comment_id: @plink_comment.id, p_comment: @invalid_p_comment_attributes }

@@ -12,7 +12,7 @@ describe Api::V1::ProfilesController do
 
   	it "returns information about profile on a hash" do
       profile_response = json_response
-  	  expect(profile_response[:name]).to eql @profile.name
+  	  expect(profile_response[:age]).to eql @profile.age
   	end
 
   	it { should respond_with 200 }
@@ -27,12 +27,12 @@ describe Api::V1::ProfilesController do
 
   	context "when is successfully updated" do
   	  before(:each) do
-  	  	patch :update, { id: @profile.id, profile: {name: "My New Name"} }
+  	  	patch :update, { id: @profile.id, profile: {age: 99} }
   	  end
 
   	  it "render the json representation for the updated user" do 
   	  	profile_response = json_response
-  	  	expect(profile_response[:name]).to eql "My New Name"
+  	  	expect(profile_response[:age]).to eql 99
   	  end
 
   	  it { should respond_with 200 }
@@ -40,7 +40,7 @@ describe Api::V1::ProfilesController do
 
   	context "when is not updated" do
   	  before(:each) do 
-  	  	patch :update, { id: @profile.id, profile: {name: ""} }
+  	  	patch :update, { id: @profile.id, profile: {age: "true"} }
   	  end
 
   	  it "render the error json response" do
@@ -50,7 +50,7 @@ describe Api::V1::ProfilesController do
 
   	  it "render the json errors on why the user could not be created" do
   	  	profile_response = json_response
-  	  	expect(profile_response[:errors][:name]).to include "can't be blank"
+  	  	expect(profile_response[:errors][:age]).to include "is not a number"
   	  end
 
   	  it { should respond_with 422 }

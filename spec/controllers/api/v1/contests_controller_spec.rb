@@ -76,7 +76,7 @@ describe Api::V1::ContestsController, :type => :controller do
   describe "PUT/PATCH#update" do
   	before(:each) do
   	  @contest = FactoryGirl.build :contest
-  	  @contest.u = {:u_id => @user.id, :name => @user.profile.name}
+  	  @contest.u = {:u_id => @user.id, :name => @user.name}
   	  @contest.save
   	  api_authorization_header(@user.auth_token)
   	end
@@ -116,7 +116,7 @@ describe Api::V1::ContestsController, :type => :controller do
   describe "DELETE#destroy" do
   	before(:each) do
   	  @contest = FactoryGirl.build :contest
-  	  @contest.u = {:u_id => @user.id, :name => @user.profile.name}
+  	  @contest.u = {:u_id => @user.id, :name => @user.name}
   	  @contest.save
   	  api_authorization_header(@user.auth_token)
   	  delete :destroy, { user_id: @user.id, id: @contest.id }

@@ -23,6 +23,7 @@ Cheersee::Application.routes.draw do
       end
       resources :feeds, :only => [:index, :show]
       get "/feeds/:id/:contest_id", to: "feeds#association"
+      get "/validations", to: "validations#email_check"
     end
   end
 end
