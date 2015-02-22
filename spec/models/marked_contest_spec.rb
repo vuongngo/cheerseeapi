@@ -14,4 +14,5 @@ describe MarkedContest do
   it { should validate_presence_of(:post) }
   it { should validate_presence_of(:ended_at) }
   it { should validate_uniqueness_of(:contest_id) }
+  it { should validate_numericality_of(:ended_at) }
 end

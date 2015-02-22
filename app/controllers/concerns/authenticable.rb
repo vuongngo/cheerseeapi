@@ -2,7 +2,10 @@ module Authenticable
 
   #Devise methods overwrite
   def current_user
-  	@current_user ||= User.find_by(:auth_token => request.headers['Authorization'])
+    token = request.headers['Authorization'].split(' ').last
+    if AuthToken.valid?(token) 
+  	  @current_user ||= User.find_by(:auth_token => token)
+    end
   end
 
   def authenticate_with_token!

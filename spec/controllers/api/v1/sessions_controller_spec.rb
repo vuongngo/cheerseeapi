@@ -48,5 +48,6 @@ RSpec.describe Api::V1::SessionsController, :type => :controller do
     end
 
     it { should respond_with 204 }
-  end  	  
+  end
+
 end

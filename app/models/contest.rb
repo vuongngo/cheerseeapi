@@ -1,14 +1,13 @@
 class Contest
   include Mongoid::Document
-  include DateTimeValidation
   field :u, 				         type: Hash 
 
   field :post,               type: String
   field :att,				         type: String
   field :rule, 				       type: String
-  field :ended_at,			     type: DateTime
-  field :created_at, 		     type: DateTime
-  field :updated_at, 		     type: DateTime
+  field :ended_at,			     type: Integer
+  field :created_at, 		     type: Integer
+  field :updated_at, 		     type: Integer
   field :winner, 			       type: Array
   field :pic,                type: Array
 
@@ -19,12 +18,12 @@ class Contest
 
   has_many :participations, :dependent => :destroy
   
-  validate :created_at_is_valid_datetime
-  validate :updated_at_is_valid_datetime
-  validate :ended_at_is_valid_datetime
   validates_presence_of :u, :post, :att, :rule, :ended_at, :created_at, :updated_at
   validates_uniqueness_of :u, :scope => [:att, :rule]
   index({ ended_at: 1 }, { unique: true })
+  validates_numericality_of :created_at, :only_integer => true
+  validates_numericality_of :ended_at, :only_integer => true
+  validates_numericality_of :updated_at, :only_integer => true
 
   after_create :create_associated_records
   

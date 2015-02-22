@@ -34,10 +34,10 @@ describe Api::V1::FeedsController do
   	before(:each) do
   	  10.times { FactoryGirl.create :participation }
   	  participation_plus = FactoryGirl.build :participation
-  	  participation_plus.u = { u_id: @user.id, name: @user.name }
+  	  participation_plus.u = { u_id: @user.id.to_s, name: @user.name }
   	  participation_plus.save
   	  contest_plus = FactoryGirl.create :contest
-  	  contest_plus.u = { u_id: @user.id, name: @user.name }
+  	  contest_plus.u = { u_id: @user.id.to_s, name: @user.name }
   	  contest_plus.save
   	  api_authorization_header(@user.auth_token)
   	  get :show, { id: @user.id }
@@ -62,7 +62,7 @@ describe Api::V1::FeedsController do
   	before(:each) do
   	  @participation = FactoryGirl.create :participation
   	  api_authorization_header(@user.auth_token)
-  	  get :association, { id: @user.id, contest_id: @participation.contest_id }
+  	  get :association, { id: @participation.contest_id }
   	end
 
   	it "returns association" do 

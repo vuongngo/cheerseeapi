@@ -29,6 +29,25 @@ describe Api::V1::ValidationsController do
 
   	  it { should respond_with 200 }
   	end
-
   end
+
+  describe "GET #token_status" do
+    context "when token is right" do
+      before(:each) do
+        @user = FactoryGirl.create :user
+        get :token_status, :token => @user.auth_token
+      end
+
+      it { should respond_with 201 }
+    end
+
+    context "when token is wrong" do
+      before(:each) do
+        @user = FactoryGirl.create :user
+        get :token_status, :token => SecureRandom.urlsafe_base64(nil, false)
+      end
+    
+    it { should respond_with 401 }
+  end  
+  end       
 end

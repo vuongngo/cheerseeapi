@@ -14,4 +14,5 @@ describe FromConnection do
   it { should validate_presence_of(:chat_id) }
   it { should validate_presence_of(:created_at) }
   it { should validate_uniqueness_of(:u) }
+  it { should validate_numericality_of(:created_at) }
 end

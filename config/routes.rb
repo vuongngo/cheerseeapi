@@ -22,8 +22,9 @@ Cheersee::Application.routes.draw do
         resources :p_likes, :only => [:create, :destroy]
       end
       resources :feeds, :only => [:index, :show]
-      get "/feeds/:id/:contest_id", to: "feeds#association"
+      get "/feed/:id", to: "feeds#association"
       get "/validations", to: "validations#email_check"
+      get "/checktoken", to: "validations#token_status"
     end
   end
 end

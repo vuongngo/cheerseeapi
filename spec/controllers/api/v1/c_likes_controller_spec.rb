@@ -18,7 +18,7 @@ describe Api::V1::CLikesController do
 
   	  it "renders the json representation of like created" do
   	  	c_like_response = json_response
-  	  	expect(c_like_response[:created_at].to_datetime.utc.to_s).to eql @c_like_attributes[:created_at].utc.to_datetime.to_s
+  	  	expect(c_like_response[:created_at]).to eql @c_like_attributes[:created_at]
   	  end
 
       it "updates the contest c_link_like" do
@@ -45,7 +45,7 @@ describe Api::V1::CLikesController do
 
   	  it "renders the json explain why fail to create" do
   	  	c_like_response = json_response
-  	  	expect(c_like_response[:errors][:created_at]).to include "must be a valid datetime"
+  	  	expect(c_like_response[:errors][:created_at]).to include "is not a number"
   	  end
 
   	  it { should respond_with 422 }

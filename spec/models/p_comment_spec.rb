@@ -12,4 +12,5 @@ describe PComment do
   it { should validate_presence_of(:post) }
   it { should validate_presence_of(:created_at) }
   it { should validate_uniqueness_of(:u).scoped_to(:post, :created_at) }
+  it { should validate_numericality_of(:created_at) }
 end

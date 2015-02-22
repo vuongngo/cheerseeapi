@@ -31,7 +31,7 @@ module Cheersee
         origins '*'
         resource '*',
           :headers => :any,
-          :methods => [:get, :post, :delete, :put, :options, :head],
+          :methods => [:get, :post, :delete, :patch, :put, :options, :head],
           :max_age => 0
       end
     end    # Settings in config/environments/* take precedence over those specified here.

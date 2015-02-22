@@ -12,4 +12,5 @@ describe Message do
   it { should validate_presence_of(:mes) }
   it { should validate_presence_of(:created_at) }
   it { should validate_uniqueness_of(:u).scoped_to(:mes, :created_at) }
+  it { should validate_numericality_of(:created_at) }
 end

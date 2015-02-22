@@ -1,6 +1,5 @@
 class Participation
   include Mongoid::Document
-  include DateTimeValidation
   field :u, 				        type: Hash 
 
   belongs_to :contest
@@ -9,18 +8,18 @@ class Participation
   field :point,				      type: String
   field :winner_place, 		  type: Integer
   field :pic,               type: Array
-  field :created_at, 		    type: DateTime
-  field :updated_at, 		    type: DateTime
+  field :created_at, 		    type: Integer
+  field :updated_at, 		    type: Integer
 
   has_one :plink_comment
   field :p_link_comment,     type: Hash
   has_one :plink_like
   field :p_link_like,        type: Hash 
 
-  validate :created_at_is_valid_datetime
-  validate :updated_at_is_valid_datetime
   validates_presence_of :u, :post, :point, :created_at, :updated_at
   validates_uniqueness_of :u, :scope => [:point, :post]
+  validates_numericality_of :created_at, :only_integer => true
+  validates_numericality_of :updated_at, :only_integer => true
 
   after_create :create_associated_records
 

@@ -8,4 +8,13 @@ class Api::V1::ValidationsController < ApplicationController
   	  render json: {isValid: true}, status: 200
   	end
   end
+
+  def token_status
+    token = params[:token]
+    if AuthToken.valid? token
+      head 201
+    else
+      head 401
+    end
+  end
 end

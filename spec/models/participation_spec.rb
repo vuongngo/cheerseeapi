@@ -22,4 +22,6 @@ describe Participation do
 
   it { should have_one(:plink_comment) }
   it { should have_one(:plink_like) }
+  it { should validate_numericality_of(:created_at) }
+  it { should validate_numericality_of(:updated_at) }
 end

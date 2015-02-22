@@ -38,6 +38,7 @@ class Api::V1::ContestsController < ApplicationController
 
   private
     def contest_params
-      params.require(:contest).permit(:post, :att, :rule, :ended_at, :created_at, :updated_at, :u => [:u_id, :name])
+      params[:contest][:u] = { :u_id => current_user.id, :name => current_user.name, :pic => current_user.profile.avatar }
+      params.require(:contest).permit(:post, :att, :rule, :ended_at, :created_at, :updated_at, :pic, :u => [:u_id, :name, :pic])
     end
 end
