@@ -8,6 +8,7 @@ Cheersee::Application.routes.draw do
       resources :sessions, :only => [:create, :destroy]
       resources :profiles, :only => [:show, :update]
       resources :contests, :only => [:index, :create, :update, :destroy] 
+      resources :marked_contests, :only => [:create, :destroy]
       resources :clink_comments do
         resources :c_comments, :only => [:create, :update, :destroy]
       end
