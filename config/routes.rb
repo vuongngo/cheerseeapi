@@ -26,6 +26,7 @@ Cheersee::Application.routes.draw do
       get "/feed/:id", to: "feeds#association"
       get "/validations", to: "validations#email_check"
       get "/checktoken", to: "validations#token_status"
+      get "/s3_access_token", to: "aws#s3_access_token"
     end
   end
 end

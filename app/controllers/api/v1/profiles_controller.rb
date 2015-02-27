@@ -9,6 +9,18 @@ class Api::V1::ProfilesController < ApplicationController
 
   def update
     profile = current_user.profile
+    if params[:avatar] != profile.avatar
+      user = { name: current_user.name, u_id: current_user.id.to_s, avatar: params[:avatar]}
+      contests = Contest.where('u.u_id' => current_user.id.to_s)
+      contests.each do |f|
+        f.update_attributes(:u => user)
+      end
+      participations = Participation.where('u.u_id' => current_user.id.to_s)
+      participations.each do |f|
+        f.update_attributes(:u => user)
+      end
+    end
+
     if profile.update(profile_params)
       render json: profile, status: 200, location: [:api, profile]
     else

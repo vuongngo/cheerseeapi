@@ -22,7 +22,7 @@ class Api::V1::ParticipationsController < ApplicationController
 
   def update
   	participation = Participation.find(params[:id])
-  	if participation.update_attributes(participation_params) && participation.u[:u_id] == current_user.id
+  	if participation.update_attributes(update_params) && participation.u[:u_id] == current_user.id
   	  render json: participation, status: 200, location: [:api, participation]
   	else
   	  render json: { errors: participation.errors }, status: 422
@@ -39,6 +39,11 @@ class Api::V1::ParticipationsController < ApplicationController
 
   private
     def participation_params
-      params.require(:participation).permit(:post, :point, :created_at, :updated_at, :u => [:u_id, :name])
+      params[:participation][:u] = { :u_id => current_user.id.to_s, :name => current_user.name, :avatar => current_user.profile.avatar }
+      params.require(:participation).permit(:post, :point, :created_at, :updated_at, :u => [:u_id, :name, :avatar], :pic => [])
+    end
+    
+    def update_params
+      params.require(:participation).permit(:post, :point, :created_at, :updated_at)
     end
 end
