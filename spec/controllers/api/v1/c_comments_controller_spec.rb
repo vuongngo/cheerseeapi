@@ -6,6 +6,26 @@ describe Api::V1::CCommentsController do
     @clink_comment = FactoryGirl.create :clink_comment
   end
 
+  describe "GET#index" do
+    before(:each) do
+      api_authorization_header(@user.auth_token)
+      get :index, { clink_comment_id: @clink_comment.id}
+    end
+
+    it 'returns 20 records from database' do
+      comments_response = json_response
+      expect(comments_response[:comments].size).to eq(2)
+    end
+
+    it { expect(json_response).to have_key(:meta) }
+    it { expect(json_response[:meta]).to have_key(:pagination) }
+    it { expect(json_response[:meta][:pagination]).to have_key(:per_page) }
+    it { expect(json_response[:meta][:pagination]).to have_key(:total_pages) }
+    it { expect(json_response[:meta][:pagination]).to have_key(:total_objects) }    
+
+    it { should respond_with 200 }      
+  end
+  
   describe "POST#create" do
     context "when successfully create" do
       before(:each) do

@@ -10,14 +10,14 @@ Cheersee::Application.routes.draw do
       resources :contests, :only => [:index, :create, :update, :destroy] 
       resources :marked_contests, :only => [:create, :destroy]
       resources :clink_comments do
-        resources :c_comments, :only => [:create, :update, :destroy]
+        resources :c_comments, :only => [:index, :create, :update, :destroy]
       end
       resources :clink_likes do
         resources :c_likes, :only => [:create, :destroy]
       end
       resources :participations, :only => [:index, :create, :update, :destroy]
       resources :plink_comments do
-        resources :p_comments, :only => [:create, :update, :destroy]
+        resources :p_comments, :only => [:index, :create, :update, :destroy]
       end
       resources :plink_likes do
         resources :p_likes, :only => [:create, :destroy]

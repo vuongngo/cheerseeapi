@@ -2,6 +2,15 @@ class Api::V1::PCommentsController < ApplicationController
   before_action :authenticate_with_token!
   respond_to :json
 
+  def index
+    plink_commment = PlinkComment.find(params[:plink_comment_id])
+    p_comments = Kaminari.paginate_array(plink_commment.p_comments).page(params[:page]).per(params[:per_page])
+    render json: { :comments => p_comments, meta: { pagination:
+                                                  { per_page: params[:per_page],
+                                                    total_pages: p_comments.total_pages,
+                                                    total_objects: p_comments.total_count } } }
+  end
+
   def create
   	plink_comment = PlinkComment.find(params[:plink_comment_id])
   	p_comment = plink_comment.p_comments.build(p_comment_params)
@@ -18,7 +27,7 @@ class Api::V1::PCommentsController < ApplicationController
   def update
   	plink_comment = PlinkComment.find(params[:plink_comment_id])
   	p_comment = plink_comment.p_comments.find(params[:id])
-  	if p_comment.update_attributes(p_comment_params) && p_comment[:u][:u_id] == current_user.id
+  	if p_comment.update_attributes(update_params) && p_comment[:u][:u_id] == current_user.id
   	  render json: p_comment, status: 200
   	else
   	  render json: { errors: p_comment.errors}, status: 422
@@ -39,6 +48,11 @@ class Api::V1::PCommentsController < ApplicationController
 
   private
     def p_comment_params
-      params.require(:p_comment).permit(:post, :created_at, :u => [:u_id, :name] )
+      params[:p_comment][:u] = { :u_id => current_user.id.to_s, :name => current_user.name, :avatar => current_user.profile.avatar }
+      params.require(:p_comment).permit(:post, :created_at, :u => [:u_id, :name, :avatar] )
+    end
+
+    def update_params
+      params.require(:p_comment).permit(:post, :created_at)
     end
 end
