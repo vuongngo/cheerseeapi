@@ -43,7 +43,8 @@ describe Api::V1::CCommentsController do
 
       it "updates the contest c_link_comment" do
         @contest1 = Contest.find(@clink_comment.contest_id)
-        expect(@contest1.c_link_comment[:count]).to eql ( @contest.c_link_comment[:count] + 1)
+        @clink_comment1 = ClinkComment.find(@clink_comment.id)
+        expect(@contest1.c_link_comment[:count]).to eql ( @clink_comment1.c_comments.count)
       end 
 
       it { should respond_with 201 }
@@ -128,7 +129,8 @@ describe Api::V1::CCommentsController do
 
   it "updates the contest c_link_comment" do
     @contest1 = Contest.find(@clink_comment.contest_id)
-    expect(@contest1.c_link_comment[:count]).to eql ( @contest.c_link_comment[:count] - 1)
+    @clink_comment1 = ClinkComment.find(@clink_comment.id)
+    expect(@contest1.c_link_comment[:count]).to eql ( @clink_comment1.c_comments.count)
   end
 
  	it { should respond_with 204 }

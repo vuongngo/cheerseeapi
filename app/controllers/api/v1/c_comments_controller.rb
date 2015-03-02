@@ -4,9 +4,10 @@ class Api::V1::CCommentsController < ApplicationController
 
   def index
     clink_commment = ClinkComment.find(params[:clink_comment_id])
-    c_comments = Kaminari.paginate_array(clink_commment.c_comments).page(params[:page]).per(params[:per_page])
+    c_comments = clink_commment.c_comments.sort!{ |a, b| b.created_at <=> a.created_at }
+    c_comments = Kaminari.paginate_array(c_comments).page(params[:page]).per(5)
     render json: { :comments => c_comments, meta: { pagination:
-                                                  { per_page: params[:per_page],
+                                                  { per_page: 5,
                                                     total_pages: c_comments.total_pages,
                                                     total_objects: c_comments.total_count } } }
   end
@@ -16,7 +17,7 @@ class Api::V1::CCommentsController < ApplicationController
   	c_comment = clink_comment.c_comments.build(c_comment_params)
   	if c_comment.save
       contest = Contest.find(clink_comment.contest_id)
-      contest.c_link_comment[:count] =+ 1
+      contest.c_link_comment[:count] = clink_comment.c_comments.count
       contest.save
   	  render json: c_comment, status: 201
   	else
@@ -39,9 +40,9 @@ class Api::V1::CCommentsController < ApplicationController
   	c_comment = clink_comment.c_comments.find(params[:id])
   	if c_comment.u[:u_id] == current_user.id
       contest = Contest.find(clink_comment.contest_id)
-      contest.c_link_comment[:count] =- 1
+      c_comment.delete
+      contest.c_link_comment[:count] = clink_comment.c_comments.count
       contest.save
-  	  c_comment.delete
   	  head 204
   	end
   end

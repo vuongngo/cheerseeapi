@@ -35,6 +35,8 @@ gem 'devise'
 gem 'random_images', '~> 0.0.6'
 # Paginations
 gem 'kaminari'
+# Background job
+gem 'sidekiq'
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false

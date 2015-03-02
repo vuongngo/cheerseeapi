@@ -4,9 +4,9 @@ class Api::V1::PCommentsController < ApplicationController
 
   def index
     plink_commment = PlinkComment.find(params[:plink_comment_id])
-    p_comments = Kaminari.paginate_array(plink_commment.p_comments).page(params[:page]).per(params[:per_page])
+    p_comments = Kaminari.paginate_array(plink_commment.p_comments).page(params[:page]).per(5)
     render json: { :comments => p_comments, meta: { pagination:
-                                                  { per_page: params[:per_page],
+                                                  { per_page: 5,
                                                     total_pages: p_comments.total_pages,
                                                     total_objects: p_comments.total_count } } }
   end
@@ -16,7 +16,7 @@ class Api::V1::PCommentsController < ApplicationController
   	p_comment = plink_comment.p_comments.build(p_comment_params)
   	if p_comment.save
       participation = Participation.find(plink_comment.participation_id)
-      participation.p_link_comment[:count] =+ 1
+      participation.p_link_comment[:count] = plink_comment.p_comments.count
       participation.save
   	  render json: p_comment, status: 201
   	else
@@ -39,9 +39,9 @@ class Api::V1::PCommentsController < ApplicationController
 	  p_comment = plink_comment.p_comments.find(params[:id])
 	  if p_comment[:u][:u_id] == current_user.id
       participation = Participation.find(plink_comment.participation_id)
-      participation.p_link_comment[:count] =- 1
-      participation.save	  
       p_comment.destroy
+      participation.p_link_comment[:count] = plink_comment.p_comments.count
+      participation.save	  
 	    head 204
 	  end
   end

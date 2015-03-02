@@ -14,6 +14,8 @@ class Api::V1::ContestsController < ApplicationController
   	contest = Contest.new(contest_params)
     if contest.save
       render json: contest, status: 201, location: [:api, contest]
+      interval = contest.ended_at - contest.updated_at
+      ContestsWorker.perform_in(interval.seconds, contest.id.to_s)
     else
       render json: { errors: contest.errors }, status: 422
     end

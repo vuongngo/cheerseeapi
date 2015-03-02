@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sidekiq/testing'
 include RandomNumber
 
 describe Api::V1::ContestsController, :type => :controller do
@@ -49,6 +50,16 @@ describe Api::V1::ContestsController, :type => :controller do
       end
 
   	  it { should respond_with 201 }
+
+      it "should run background job" do      
+        Sidekiq::Testing.fake!
+        interval = json_response[:ended_at] - json_response[:updated_at]
+
+        expect   {
+          ContestsWorker.perform_in(interval.seconds, json_response[:_id][:"$oid"]).to change(ContestsWorker.jobs, :size).by(1)
+        }
+      end
+
   	end
 
   	context "when not created" do

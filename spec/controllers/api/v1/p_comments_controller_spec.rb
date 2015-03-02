@@ -43,7 +43,8 @@ describe Api::V1::PCommentsController do
 
       it "updates the participation p_link_comment" do
         @participation1 = Participation.find(@plink_comment.participation_id)
-  	    expect(@participation1.p_link_comment[:count]).to eql (@participation.p_link_comment[:count] + 1 )
+        @plink_comment1 = PlinkComment.find(@plink_comment.id)
+  	    expect(@participation1.p_link_comment[:count]).to eql (@plink_comment1.p_comments.count)
       end
 
       it { should respond_with 201 }
@@ -127,7 +128,8 @@ describe Api::V1::PCommentsController do
 
     it "updates the participation p_link_comment" do
       @participation1 = Participation.find(@plink_comment.participation_id)
-      expect(@participation1.p_link_comment[:count]).to eql (@participation.p_link_comment[:count] -1 )
+      @plink_comment1 = PlinkComment.find(@plink_comment.id)
+      expect(@participation1.p_link_comment[:count]).to eql (@plink_comment1.p_comments.count)
     end
   	
     it { should respond_with 204 }
