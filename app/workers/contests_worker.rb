@@ -3,12 +3,21 @@ class ContestsWorker
   
   def perform(id)
     contest = Contest.find(id)
-    participation = Participations.where(contest_id: id).order_by(:point.desc, :create_at.asc).first
-    winner_attributes = [participation]
-    if contest.update_attributes(winner: winner_attributes)
-    	# Push to redis notification
+    participation = Participation.where(contest_id: id).order_by(:point.desc, :create_at.asc).first
+    if participation.present?  
+      win = [participation]
+      winner = User.find(participation.u.u_id)
+      poster = User.find(contest.u.u_id)
+      if contest.update_attributes(winner: win) && participation.update_attributes(winner_place: 1)
+        winner.update_attributes(from_connections: participation)
+        poster.update_attributes(to_connection: contest)
+      	# Push to redis notification
+      else
+      	# Send email to user
+      end
     else
-    	# Send email to user
+      contest.update_attributes(winner: ["null"])
+      # Push to redis notification
     end
   end
 end

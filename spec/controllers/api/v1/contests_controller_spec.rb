@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'sidekiq/testing'
 include RandomNumber
 
 describe Api::V1::ContestsController, :type => :controller do
@@ -31,6 +30,8 @@ describe Api::V1::ContestsController, :type => :controller do
   describe "POST#create" do 
   	context "when successfully create" do
   	  before(:each) do 
+        Sidekiq::Worker.clear_all
+        Sidekiq::Testing.inline!
   	  	@contest_attributes = FactoryGirl.attributes_for :contest
   	  	api_authorization_header(@user.auth_token)
   	  	post :create, { user_id: @user.id, contest: @contest_attributes }, format: :json
@@ -51,13 +52,14 @@ describe Api::V1::ContestsController, :type => :controller do
 
   	  it { should respond_with 201 }
 
-      it "should run background job" do      
-        Sidekiq::Testing.fake!
-        interval = json_response[:ended_at] - json_response[:updated_at]
+      # it "should run background job" do   
+      #   assert_equal 1, ContestsWorker.jobs.size  
+      # end
 
-        expect   {
-          ContestsWorker.perform_in(interval.seconds, json_response[:_id][:"$oid"]).to change(ContestsWorker.jobs, :size).by(1)
-        }
+      it "should execute and find winner" do
+        contest_response = json_response
+        contest = Contest.find(contest_response[:_id][:"$oid"])
+        expect(contest[:winner][0]).to eql "null"
       end
 
   	end
