@@ -4,6 +4,7 @@ class Api::V1::PCommentsController < ApplicationController
 
   def index
     plink_commment = PlinkComment.find(params[:plink_comment_id])
+    p_comments = plink_commment.p_comments.sort!{ |a, b| b.created_at <=> a.created_at }
     p_comments = Kaminari.paginate_array(plink_commment.p_comments).page(params[:page]).per(5)
     render json: { :comments => p_comments, meta: { pagination:
                                                   { per_page: 5,

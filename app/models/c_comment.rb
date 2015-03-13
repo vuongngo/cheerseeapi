@@ -1,6 +1,5 @@
 class CComment
   include Mongoid::Document
-
   field :u,					type: Hash 
 
   field :post,				type: String

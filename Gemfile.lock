@@ -203,6 +203,7 @@ DEPENDENCIES
   rack-cors
   rails (= 4.1.0)
   random_images (~> 0.0.6)
+  redis
   rspec-rails (~> 2.14)
   sass-rails (~> 4.0.0)
   sdoc

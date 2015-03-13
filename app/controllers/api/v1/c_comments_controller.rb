@@ -19,6 +19,21 @@ class Api::V1::CCommentsController < ApplicationController
       contest = Contest.find(clink_comment.contest_id)
       contest.c_link_comment[:count] = clink_comment.c_comments.count
       contest.save
+
+      user_id = contest.u[:u_id]
+      msg = {
+        user_id: user_id,
+        resource: 'comments',
+        action: create,
+        id: c_comment.id,
+        u_id: c_comment.u.u_id,
+        name: c_comment.u.name,
+        avatar: c_comment.u.avatar,
+        post: c_comment.post,
+        created_at: c_comment.created_at
+      }
+      $redis.publish 'user-notification', msg.to_json
+
   	  render json: c_comment, status: 201
   	else
   	  render json: { errors: c_comment.errors }, status: 422

@@ -37,6 +37,7 @@ gem 'random_images', '~> 0.0.6'
 gem 'kaminari'
 # Background job
 gem 'sidekiq'
+gem 'redis'
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
