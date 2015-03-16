@@ -5,6 +5,7 @@ Cheersee::Application.routes.draw do
   namespace :api, defaults: { format: :json }, constraints: { subdomain: 'api'}, path: '/' do
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
       resources :users, :only => [:show, :create, :update, :destroy]
+      resources :user_notifications, :only => [:index]
       resources :sessions, :only => [:create, :destroy]
       resources :profiles, :only => [:show, :update]
       resources :contests, :only => [:index, :create, :update, :destroy] 
@@ -27,6 +28,7 @@ Cheersee::Application.routes.draw do
       get "/validations", to: "validations#email_check"
       get "/checktoken", to: "validations#token_status"
       get "/s3_access_token", to: "aws#s3_access_token"
+      get "/clear_notifications", to: "user_notifications#clear_notifications"
     end
   end
 end

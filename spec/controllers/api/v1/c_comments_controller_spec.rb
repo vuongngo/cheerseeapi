@@ -47,6 +47,19 @@ describe Api::V1::CCommentsController do
         expect(@contest1.c_link_comment[:count]).to eql ( @clink_comment1.c_comments.count)
       end 
 
+      # it "published to redis server" do
+      #   $redis.subscribe('contest-comment', 'user-notification') do |on|
+      #     on.message do |channel, message|
+      #       mes = message.to_json
+      #       expect(mes[:post]).to eql (@c_comment_attributes[:post])
+      #     end
+      #   end
+      # end
+
+      it "update user notification" do
+        notification = UserNotification.find_by(post: @c_comment_attributes[:post])
+        expect(notification[:viewed]).to eql false
+      end
       it { should respond_with 201 }
     end
 

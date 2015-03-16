@@ -19,6 +19,24 @@ class Api::V1::PCommentsController < ApplicationController
       participation = Participation.find(plink_comment.participation_id)
       participation.p_link_comment[:count] = plink_comment.p_comments.count
       participation.save
+
+      user_id = participation.u[:u_id]
+      msg = {
+        user_id: user_id,
+        resource: 'p_comments',
+        action: 'create',
+        element_id: p_comment.id,
+        u_id: p_comment.u[:u_id],
+        name: p_comment.u[:name],
+        avatar: p_comment.u[:avatar],
+        post: p_comment.post,
+        created_at: p_comment.created_at
+      }
+      p_comment[:pid] = params[:plink_comment_id]
+      $redis.publish 'participation-comment', p_comment.to_json
+      if $redis.publish 'user-notification', msg.to_json
+        UserNotification.create(msg)
+      end
   	  render json: p_comment, status: 201
   	else
   	  render json: { errors: p_comment.errors }, status: 422

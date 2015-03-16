@@ -11,7 +11,6 @@ describe Api::V1::CLikesController do
   	  before(:each) do
         @contest = Contest.find(@clink_like.contest_id)
   	  	@c_like_attributes = FactoryGirl.attributes_for :c_like
-  	  	@c_like_attributes[:u] = { u_id: @user.id, name: @user.name }
   	    api_authorization_header(@user.auth_token)
   	    post :create, { user_id: @user.id, clink_like_id: @clink_like.id, c_like: @c_like_attributes }
   	  end
@@ -22,9 +21,15 @@ describe Api::V1::CLikesController do
   	  end
 
       it "updates the contest c_link_like" do
-        @contest1 = Contest.find(@clink_like.contest_id)
-        expect(@contest1.c_link_like[:count]).to eql ( @contest.c_link_like[:count] + 1)
+        contest1 = Contest.find(@clink_like.contest_id)
+        clink_like1 = ClinkLike.find(@clink_like.id)
+        expect(contest1.c_link_like[:count]).to eql ( clink_like1.c_likes.count )
       end 
+
+      it "create user notification" do
+        notification = UserNotification.find_by(created_at: @c_like_attributes[:created_at])
+        expect(notification[:viewed]).to eql false
+      end
 
   	  it { should respond_with 201 }
   	end
@@ -65,8 +70,9 @@ describe Api::V1::CLikesController do
   	end
 
     it "updates the contest c_link_like" do
-      @contest1 = Contest.find(@clink_like.contest_id)
-      expect(@contest1.c_link_like[:count]).to eql ( @contest.c_link_like[:count] - 1)
+      contest1 = Contest.find(@clink_like.contest_id)
+      clink_like1 = ClinkLike.find(@clink_like.id)
+      expect(contest1.c_link_like[:count]).to eql ( clink_like1.c_likes.count )
     end
 
   	it { should respond_with 204 }

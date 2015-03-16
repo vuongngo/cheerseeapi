@@ -23,17 +23,20 @@ class Api::V1::CCommentsController < ApplicationController
       user_id = contest.u[:u_id]
       msg = {
         user_id: user_id,
-        resource: 'comments',
-        action: create,
-        id: c_comment.id,
-        u_id: c_comment.u.u_id,
-        name: c_comment.u.name,
-        avatar: c_comment.u.avatar,
+        resource: 'c_comments',
+        action: 'create',
+        element_id: c_comment.id,
+        u_id: c_comment.u[:u_id],
+        name: c_comment.u[:name],
+        avatar: c_comment.u[:avatar],
         post: c_comment.post,
-        created_at: c_comment.created_at
+        created_at: c_comment.created_at, 
       }
-      $redis.publish 'user-notification', msg.to_json
-
+      c_comment[:cid] = params[:clink_comment_id]
+      $redis.publish 'contest-comment', c_comment.to_json
+      if $redis.publish 'user-notification', msg.to_json
+        UserNotification.create(msg)
+      end
   	  render json: c_comment, status: 201
   	else
   	  render json: { errors: c_comment.errors }, status: 422

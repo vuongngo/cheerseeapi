@@ -11,7 +11,6 @@ describe Api::V1::PLikesController do
   	  before(:each) do
         @participation = Participation.find(@plink_like.participation_id)
   	  	@p_like_attributes = FactoryGirl.attributes_for :p_like
-  	  	@p_like_attributes[:u] = { u_id: @user.id, name: @user.name }
   	    api_authorization_header(@user.auth_token)
   	    post :create, { user_id: @user.id, plink_like_id: @plink_like.id, p_like: @p_like_attributes }
   	  end
@@ -22,10 +21,16 @@ describe Api::V1::PLikesController do
   	  end
 
       it "updates the participation p_link_like" do
-        @participation1 = Participation.find(@plink_like.participation_id)
-        expect(@participation1.p_link_like[:count]).to eql ( @participation.p_link_like[:count] + 1)
+        participation1 = Participation.find(@plink_like.participation_id)
+        plink_like1 = PlinkLike.find(@plink_like.id)
+        expect(participation1.p_link_like[:count]).to eql ( plink_like1.p_likes.count )
       end
 
+      it "create user notification" do
+        notification = UserNotification.find_by(created_at: @p_like_attributes[:created_at])
+        expect(notification[:viewed]).to eql false
+      end
+       
   	  it { should respond_with 201 }
   	end
 
@@ -65,8 +70,9 @@ describe Api::V1::PLikesController do
   	end
 
     it "updates the participation p_link_like" do
-      @participation1 = Participation.find(@plink_like.participation_id)
-      expect(@participation1.p_link_like[:count]).to eql ( @participation.p_link_like[:count] -1 )
+      participation1 = Participation.find(@plink_like.participation_id)
+      plink_like1 = PlinkLike.find(@plink_like.id)
+      expect(participation1.p_link_like[:count]).to eql ( plink_like1.p_likes.count )
     end
   	
     it { should respond_with 204 }

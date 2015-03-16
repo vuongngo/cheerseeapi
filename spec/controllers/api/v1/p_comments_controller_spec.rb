@@ -47,6 +47,11 @@ describe Api::V1::PCommentsController do
   	    expect(@participation1.p_link_comment[:count]).to eql (@plink_comment1.p_comments.count)
       end
 
+      it 'update user notification' do
+        notification = UserNotification.find_by(post: @p_comment_attributes[:post])
+        expect(notification[:viewed]).to eql false
+      end
+
       it { should respond_with 201 }
   	end
 
