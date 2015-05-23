@@ -37,6 +37,9 @@ class Api::V1::CCommentsController < ApplicationController
       if $redis.publish 'user-notification', msg.to_json
         UserNotification.create(msg)
       end
+      if feed = { cid: contest.id.to_s, comment_count: clink_comment.c_comments.count }
+        $redis.publish 'feed-update', feed.to_json
+      end
   	  render json: c_comment, status: 201
   	else
   	  render json: { errors: c_comment.errors }, status: 422

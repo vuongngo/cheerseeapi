@@ -13,3 +13,9 @@ doc/
 *.swp
 *~
 .DS_Store
+
+# Ignore config
+/config
+
+# Ignore AWS setting
+/app/controllers/api/v1/aws_controller.rb

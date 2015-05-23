@@ -22,9 +22,11 @@ class Api::V1::CLikesController < ApplicationController
         created_at: c_like.created_at
       }
       c_like[:cid] = params[:clink_like_id]
-      $redis.publish 'contest-like', c_like.to_json
       if $redis.publish 'user-notification', msg.to_json
         UserNotification.create(msg)
+      end
+      if $feed = { coid: contest.id.to_s, like_count: clink_like.c_likes.count}
+        $redis.publish 'feed-update', feed.to_json
       end
   	  render json: c_like, status: 201
   	else
