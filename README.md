@@ -63,3 +63,8 @@
 
 #####Delete participation
 * DELETE: api/v1/participations/:id
+
+#####Other endpoints avalable via
+```
+rake routes
+```
