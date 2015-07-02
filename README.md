@@ -1,6 +1,6 @@
 # Cheersee API
 * Concept: Create API endpoint with business logic to Gamify Dating
-* Tech stack: API with Ruby on Rails, Frontend with Angularjs, Realtime feature with Nodejs
+* Tech stack: API with Ruby on Rails, Frontend with Angularjs, Realtime feature with Nodejs, database with MongoDB, Redis
 
 #####Signup
 * POST: /api/v1/users
